@@ -38,3 +38,26 @@ class Refrigerator:
                     return True
 
         return False
+
+    def take_out_an_item(self, id_number) -> Item:
+        for i in self.shelves_list:
+            for j in self.shelves_list[i].items_list:
+                if self.shelves_list[i].items_list[j].id == id_number:
+                    return self.shelves_list[i].items_list[j]
+        raise ValueError('The item is not currently in the refrigerator')
+
+    def cleanup(self):
+        for i in self.shelves_list:
+            for j in self.shelves_list[i].items_list:
+                if functions.is_expired(self.shelves_list[i].items_list[j]):
+                    self.take_out_an_item(self.shelves_list[i].items_list[j])
+
+    def whats_to_eat(self, kosher_category, type_category):
+        foods_list = []
+        for i in self.shelves_list:
+            for j in self.shelves_list[i].items_list:
+                if self.shelves_list[i].items_list[j].kosher_category == kosher_category and \
+                     self.shelves_list[i].items_list[j].type_category == type_category and \
+                        not functions.is_expired(self.shelves_list[i].items_list[j]):
+                    foods_list.append(self.shelves_list[i].items_list[j])
+        return foods_list
