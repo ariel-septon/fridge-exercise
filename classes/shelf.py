@@ -2,14 +2,14 @@ from helpers import functions
 
 
 class Shelf:
-    def __init__(self, level_number, place_size, place_left, items_list):
-        self.id = functions.id_number_generator(self)
+    def __init__(self, level_number, place_size, items_list):
+        self.id = functions.id_number_generator()
         self.level_number = level_number
         self.place_size = place_size
-        self.place_left = place_left
         self.items_list = items_list
+        self.place_left = place_size - sum(item.place_taken for item in self.items_list)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, Shelf):
             return False
 

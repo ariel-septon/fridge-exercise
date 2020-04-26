@@ -3,8 +3,8 @@ from helpers import functions
 
 class Item:
     def __init__(self, name, shelf_located, type_category, kosher_category,
-                 expiration_date, place_taken):
-        self.id = functions.id_number_generator(self)
+                 expiration_date, place_taken) -> bool:
+        self.id = functions.id_number_generator()
         self.name = name
         self.shelf_located = shelf_located
         self.type_category = type_category
@@ -12,7 +12,7 @@ class Item:
         self.expiration_date = expiration_date
         self.place_taken = place_taken
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if not isinstance(other, Item):
             return False
 
