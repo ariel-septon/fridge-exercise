@@ -1,10 +1,11 @@
 from datetime import *
-from classes.item import Item
+from app.classes.item import Item
+from app.classes.shelf import Shelf
 
 global_id = 0
 
 
-def id_number_generator():
+def id_number_generator() -> int:
     global global_id
     global_id += 1
     return global_id
@@ -36,7 +37,7 @@ def is_item_fits_categories(item: Item, kosher_category, type_category) -> bool:
            not is_expired(item)
 
 
-def get_shelf_by_id(self, id_number):
+def get_shelf_by_id(self, id_number) -> Shelf:
     shelf = next((shelf for shelf in self.shelves_list if shelf.id == id_number), None)
     if shelf is not None:
         return shelf
@@ -44,7 +45,7 @@ def get_shelf_by_id(self, id_number):
 
 
 def remove_items_due_specific_expiration_date_and_kosher_category(self, number_of_days: int,
-                                                                  kosher_category: str, save_items: {}):
+                                                                  kosher_category: str, save_items: {}) -> None:
     for shelf in self.shelves_list:
         for item in shelf.items_list:
             if is_expired_in_less_than_x_days(item, number_of_days) \
@@ -55,11 +56,10 @@ def remove_items_due_specific_expiration_date_and_kosher_category(self, number_o
                 self.take_out_an_item(item.id)
 
 
-def insert_the_fresh_items_back_to_fridge(self, save_items: dict):
+def insert_the_fresh_items_back_to_fridge(self, save_items: dict) -> None:
     for shelf_id, items in save_items.items():
         shelf = get_shelf_by_id(self, shelf_id)
         for item in items:
             self.add_an_item(shelf, item)
     print('This is not the time to do shopping')
     print('all the items who have not expired are back to the fridge')
-
