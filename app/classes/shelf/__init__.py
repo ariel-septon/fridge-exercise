@@ -1,5 +1,7 @@
 from flask import Blueprint
-from ...main import views, errors
 
 shelf = Blueprint('shelf', __name__)
+
+from ...main import views, errors
+
 
