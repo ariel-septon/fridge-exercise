@@ -3,8 +3,8 @@ from app.helpers.utils import is_expired
 from app.helpers.utils import is_item_fits_categories
 from app.helpers.utils import remove_items_due_specific_expiration_date_and_kosher_category
 from app.helpers.utils import insert_the_fresh_items_back_to_fridge
-from app.classes.shelf import Shelf
-from app.classes.item import Item
+from app.classes.shelf.shelf import Shelf
+from app.classes.item.item import Item
 
 
 class Refrigerator:

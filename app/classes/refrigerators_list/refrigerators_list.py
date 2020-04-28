@@ -1,4 +1,4 @@
-from app.classes.refrigerator import Refrigerator
+from app.classes.refrigerator.refrigerator import Refrigerator
 
 
 class Refrigerators:

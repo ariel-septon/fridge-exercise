@@ -1,6 +1,6 @@
 from datetime import *
-from app.classes.item import Item
-from app.classes.shelf import Shelf
+from app.classes.item.item import Item
+from app.classes.shelf.shelf import Shelf
 
 global_id = 0
 
