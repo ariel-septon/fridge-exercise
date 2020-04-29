@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>505</title>
+    <link href="{{ url_for('static', filename='css/error_style.css') }}" rel="stylesheet">
 </head>
 <body>
-505
+<div id="error">
+  <div id="box"></div>
+  <h3>ERROR 500</h3>
+  <p>Things are a little <span>unstable</span> here</p>
+  <p>I suggest come back later</p>
+</div>
 </body>
 </html>

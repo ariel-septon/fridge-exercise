@@ -1,86 +1,60 @@
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
 
 
-class Employee(UserMixin, db.Model):
+class Item(db.Model):
     """
-    Create an Employee table
-    """
-
-    # Ensures table will be named in plural and not in singular
-    # as is the name of the model
-    __tablename__ = 'employees'
-
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(60), index=True, unique=True)
-    username = db.Column(db.String(60), index=True, unique=True)
-    first_name = db.Column(db.String(60), index=True)
-    last_name = db.Column(db.String(60), index=True)
-    password_hash = db.Column(db.String(128))
-    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    is_admin = db.Column(db.Boolean, default=False)
-
-    @property
-    def password(self):
-        """
-        Prevent pasword from being accessed
-        """
-        raise AttributeError('password is not a readable attribute.')
-
-    @password.setter
-    def password(self, password):
-        """
-        Set password to a hashed password
-        """
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        """
-        Check if hashed password matches actual password
-        """
-        return check_password_hash(self.password_hash, password)
-
-    def __repr__(self):
-        return '<Employee: {}>'.format(self.username)
-
-
-# Set up user_loader
-@login_manager.user_loader
-def load_user(user_id):
-    return Employee.query.get(int(user_id))
-
-
-class Department(db.Model):
-    """
-    Create a Department table
+    Create a Item table
     """
 
-    __tablename__ = 'departments'
+    __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
-    description = db.Column(db.String(200))
-    employees = db.relationship('Employee', backref='department',
-                                lazy='dynamic')
+    shelf_located = db.Column(db.Integer)
+    type_category = db.Column(db.String(60))
+    kosher_category = db.Column(db.String(60))
+    expiration_date = db.Column(db.DATE)
+    place_taken = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<Department: {}>'.format(self.name)
+        return '<Item: {}>'.format(self.name)
 
 
-class Role(db.Model):
+class Shelf(db.Model):
     """
-    Create a Role table
+    Create a shelf table
     """
 
-    __tablename__ = 'roles'
+    __tablename__ = 'shelves'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), unique=True)
-    description = db.Column(db.String(200))
-    employees = db.relationship('Employee', backref='role',
-                                lazy='dynamic')
+    level_number = db.Column(db.Integer)
+    place_size = db.Column(db.Integer)
+    """
+    items_list = db.relationship('Item', backref='shelf',
+                                 lazy='dynamic')
+    """
+    # place_left
 
     def __repr__(self):
-        return '<Role: {}>'.format(self.name)
+        return '<Shelf: {}>'.format(self.name)
+
+
+class Refrigerator(db.Model):
+    """
+    Create a refrigerator table
+    """
+
+    __tablename__ = 'refrigerators'
+
+    id = db.Column(db.Integer, primary_key=True)
+    model = db.Column(db.String(60), unique=True)
+    color = db.Column(db.String(60))
+    """
+    shelves_list = db.relationship('Shelf', backref='refrigerator',
+                                   lazy='dynamic')
+    """
+    # shelf_amount
+
+    def __repr__(self):
+        return '<Refrigerator: {}>'.format(self.name)

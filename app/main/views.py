@@ -1,9 +1,8 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for
 from . import main
-# from .forms import NameForm
 from .. import db
-
+from config import Config
 
 # from ..models import User
 
@@ -13,7 +12,11 @@ def index():
     """
     Render the homepage template on the / route
     """
-    return render_template('home/index.html', title="Welcome")
+    return render_template('home/index.html',
+                           name=session.get('name'),
+                           known=session.get('known', False),
+                           current_time=datetime.utcnow())
+    # return render_template('home/index.html', title="Welcome")
 
 
 @main.route('/ret', methods=['GET', 'POST'])
