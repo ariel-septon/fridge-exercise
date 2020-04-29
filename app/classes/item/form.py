@@ -14,7 +14,7 @@ class CreateAnItemForm(FlaskForm):
     kosher_category = StringField('Kosher category', validators=[DataRequired()])
     expiration_date = StringField('Expiration date', validators=[DataRequired()])
     place_taken = IntegerField('Place taken', validators=[DataRequired()])
-    submit = SubmitField('Create')
+    submit = SubmitField('Submit')
     """def validate_email(self, field):
         if Employee.query.filter_by(email=field.data).first():
             raise ValidationError('Email is already in use.')

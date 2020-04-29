@@ -16,8 +16,8 @@ print(app_config.items())
 
 def create_app(config_name):
     app = Flask(__name__)
-    app.config.from_object(app_config[config_name])
-    app_config[config_name].init_app(app)
+    # app.config.from_object(app_config[config_name])
+    # app_config[config_name].init_app(app)
     import os
     SECRET_KEY = os.urandom(32)
     app.config['SECRET_KEY'] = SECRET_KEY

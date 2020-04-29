@@ -18,7 +18,6 @@
                 <tr>
                   <th width="15%"> Name </th>
                   <th width="40%"> Description </th>
-                  <th width="15%"> Employee Count </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
@@ -29,12 +28,12 @@
                   <td> {{ item.name }} </td>
                   <td> {{ item.kosher_category }} </td>
                   <td>
-                    <a href="{{ url_for('main.index_more') }}">
+                      <a href="{{ url_for('item.edit', item_id=item.id) }}">
                       <i class="fa fa-pencil"></i> Edit 
                     </a>
                   </td>
                   <td>
-                    <a href="{{ url_for('main.index_more') }}">
+                     <a href="{{ url_for('item.delete', item_id=item.id) }}">
                       <i class="fa fa-trash"></i> Delete 
                     </a>
                   </td>
