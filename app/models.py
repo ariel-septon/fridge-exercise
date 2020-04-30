@@ -10,11 +10,12 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60), unique=True)
-    shelf_located = db.Column(db.Integer)
+    # shelf_located = db.Column(db.Integer)
     type_category = db.Column(db.String(60))
     kosher_category = db.Column(db.String(60))
     expiration_date = db.Column(db.DATE)
     place_taken = db.Column(db.Integer)
+    # foreign key
     shelf_id = db.Column(db.Integer, db.ForeignKey('shelves.id'))
 
     def __repr__(self):
@@ -33,7 +34,6 @@ class Shelf(db.Model):
     place_size = db.Column(db.Integer)
     items_list = db.relationship('Item', backref='shelf',
                                  lazy='dynamic')
-    # place_left
     # foreign key
     refrigerator_id = db.Column(db.Integer, db.ForeignKey('refrigerators.id'))
 
@@ -54,8 +54,6 @@ class Refrigerator(db.Model):
     shelves_list = db.relationship('Shelf',
                                    backref='refrigerator',
                                    lazy='dynamic')
-
-    # shelf_amount
 
     def __repr__(self):
         return '<Refrigerator: {}>'.format(self.name)

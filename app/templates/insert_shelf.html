@@ -1,0 +1,25 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+{% block title %}Insert Shelf{% endblock %}
+{% block body %}
+<div class="content-section">
+ <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <div class="center">
+            <h1> Insert Shelf</h1>
+            <br/>
+            <p>
+                Select a shelf to insert to
+                <span style="color: #aec251;">
+                    {{ refrigerator.model }} {{ refrigerator.color }}
+                </span>
+            </p>
+            <br/>
+            {{ wtf.quick_form(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

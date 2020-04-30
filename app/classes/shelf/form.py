@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
-from ...models import Shelf
+from wtforms import StringField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, NumberRange
+from ...models import Shelf, Item
+from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField, QuerySelectField
 
 
 class CreateAShelfForm(FlaskForm):
@@ -13,8 +14,10 @@ class CreateAShelfForm(FlaskForm):
         self.items_list = items_list
         self.place_left = place_size - sum(item.place_taken for item in self.items_list)
     """
-    level_number = StringField('Level number', validators=[DataRequired()])
+    level_number = IntegerField('Level number', validators=[NumberRange(min=0)])
     place_size = StringField('Place  size', validators=[DataRequired()])
+    items_list = QuerySelectMultipleField(query_factory=lambda: Item.query.all(),
+                                          get_label="name")
     submit = SubmitField('Create')
     """def validate_email(self, field):
         if Employee.query.filter_by(email=field.data).first():

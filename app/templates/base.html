@@ -21,9 +21,9 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
-                <li><a href="{{ url_for('item.create_an_item') }}">Create an item</a></li>
-                <li><a href="{{ url_for('refrigerator.create') }}">Create a refrigerator</a></li>
-                <li><a href="{{ url_for('shelf.create') }}">Create a shelf</a></li>
+                <li><a href="{{ url_for('refrigerator.list_refrigerators') }}">Refrigerators</a></li>
+                <li><a href="{{ url_for('shelf.list_shelves') }}">Shelves</a></li>
+                <li><a href="{{ url_for('item.list_items') }}">Items</a></li>
             </ul>
           </div>
         </div>
@@ -40,11 +40,11 @@
                     <ul class="list-inline">
                         <li><a href="{{ url_for('main.index') }}">Home</a></li>
                         <li class="footer-menu-divider">⋅</li>
-                        <li><a href="{{ url_for('item.create_an_item') }}">Create an item</a></li>
+                        <li><a href="{{ url_for('refrigerator.list_refrigerators') }}">Refrigerators</a></li>
                         <li class="footer-menu-divider">⋅</li>
-                        <li><a href="{{ url_for('refrigerator.create') }}">Create a refrigerator</a></li>
+                        <li><a href="{{ url_for('shelf.list_shelves') }}">Shelves</a></li>
                         <li class="footer-menu-divider">⋅</li>
-                        <li><a href="{{ url_for('shelf.create') }}">Create a shelf</a></li>
+                        <li><a href="{{ url_for('item.list_items') }}">Items</a></li>
                         <li class="footer-menu-divider">⋅</li>
                     </ul>
                 </div>

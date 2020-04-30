@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
+from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import DataRequired
-from ...models import Refrigerator
+from ...models import Shelf
 
 
 class CreateARefrigeratorForm(FlaskForm):
@@ -15,6 +16,8 @@ class CreateARefrigeratorForm(FlaskForm):
     """
     model = StringField('Model', validators=[DataRequired()])
     color = StringField('Color', validators=[DataRequired()])
+    shelves_list = QuerySelectMultipleField(query_factory=lambda: Shelf.query.all(),
+                                            get_label="level_number")
     submit = SubmitField('Create')
     """def validate_email(self, field):
         if Employee.query.filter_by(email=field.data).first():
