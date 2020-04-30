@@ -26,9 +26,6 @@ def create_an_item():
         db.session.commit()
         flash('success!')
 
-        # redirect to the login page
-        return redirect(url_for('auth.login'))
-
     # load registration template
     return render_template('auth/creation_form.html', form=form, title='Create an item', object='an item')
 
