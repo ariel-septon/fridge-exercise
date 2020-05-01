@@ -19,7 +19,7 @@
                 <tr>
                   <th width="15%"> Name </th>
                   <th width="40%"> Description </th>
-                  <th width="15%"> Employee Count </th>
+                  <th width="15%"> Stored shelves </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
@@ -31,7 +31,9 @@
                   <td> {{ refrigerator.color }} </td>
                   <td>
                     {% if refrigerator.shelves_list %}
-                      {{ refrigerator.shelves_list.count() }}
+                    {% for shelf in refrigerator.shelves_list %}
+                      shelf.level_number: {{shelf.level_number}}
+                    {% endfor %}
                     {% else %}
                       0
                     {% endif %}

@@ -16,8 +16,6 @@ class CreateAShelfForm(FlaskForm):
     """
     level_number = IntegerField('Level number', validators=[NumberRange(min=0)])
     place_size = StringField('Place  size', validators=[DataRequired()])
-    items_list = QuerySelectMultipleField(query_factory=lambda: Item.query.all(),
-                                          get_label="name")
     submit = SubmitField('Create')
     """def validate_email(self, field):
         if Employee.query.filter_by(email=field.data).first():

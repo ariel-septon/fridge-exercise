@@ -17,9 +17,8 @@
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th width="15%"> Name </th>
-                  <th width="40%"> Description </th>
-                  <th width="15%"> Employee Count </th>
+                  <th width="15%"> Level_number </th>
+                  <th width="15%"> Stored items </th>
                   <th width="15%"> Edit </th>
                   <th width="15%"> Delete </th>
                 </tr>
@@ -30,7 +29,9 @@
                   <td> {{ shelf.level_number }} </td>
                   <td>
                     {% if shelf.items_list %}
-                      {{ shelf.items_list.count() }}
+                    {% for item in shelf.items_list %}
+                          {{ item.name }}
+                    {% endfor %}
                     {% else %}
                       0
                     {% endif %}

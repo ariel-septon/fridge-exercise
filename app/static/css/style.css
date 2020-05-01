@@ -53,7 +53,6 @@ p.copyright {
     padding: 50px 0;
     border-top: 1px solid #e7e7e7;
     background: url(../img/intro-bg.jpg) no-repeat center center;
-    background-size: cover;
 }
 
 .footer, .push {
@@ -71,7 +70,7 @@ p.copyright {
     padding-top: 50px;
     padding-bottom: 50px;
     text-align: center;
-    color: #000;
+    color: darkslategrey;
     background: url(../img/intro-bg.jpg) no-repeat center center;
     background-size: cover;
     height: 100%;

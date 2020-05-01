@@ -16,8 +16,7 @@ def create():
     form = CreateAShelfForm()
     if form.validate_on_submit():
         new_shelf = Shelf(level_number=form.level_number.data,
-                          place_size=form.place_size.data,
-                          items_list=form.items_list.data)
+                          place_size=form.place_size.data)
 
         # add employee to the database
         db.session.add(new_shelf)
@@ -48,8 +47,7 @@ def add():
     form = CreateAShelfForm()
     if form.validate_on_submit():
         new_shelf = Shelf(level_number=form.level_number.data,
-                          place_size=form.place_size.data,
-                          items_list=form.items_list.data)
+                          place_size=form.place_size.data)
 
         try:
             # add role to the database
@@ -81,7 +79,6 @@ def edit(shelf_id):
     if form.validate_on_submit():
         edit_shelf.level_number = form.level_number.data
         edit_shelf.place_size = form.place_size.data
-        edit_shelf.items_list = form.items_list.data
         db.session.add(edit_shelf)
         db.session.commit()
         flash('You have successfully edited the shelf.')
@@ -91,7 +88,6 @@ def edit(shelf_id):
 
     form.level_number.data = edit_shelf.level_number
     form.place_size.data = edit_shelf.place_size
-    form.items_list.data = edit_shelf.items_list
     return render_template('edit/shelf.html', add_shelf=add_shelf,
                            form=form, title="Edit Shelf")
 

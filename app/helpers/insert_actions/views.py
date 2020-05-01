@@ -52,6 +52,6 @@ def item(shelf_id):
         flash('You have successfully assigned a department and role.')
         return redirect(url_for('insert_actions.choose_action'))
 
-    return render_template('insert_shelf.html',
+    return render_template('insert_item.html',
                            shelf=current_shelf, form=form,
                            title='Assign Item')
