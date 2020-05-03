@@ -14,6 +14,15 @@ def list_methods():
     """
     Render the homepage template on the / route
     """
+
+    return render_template('list_pages/methods.html', template=True)
+
+
+@methods.route('/methods/compare', methods=['GET', 'POST'])
+def compare_methods():
+    """
+    Render the homepage template on the / route
+    """
     refrigerator_form = CompareRefrigerators()
     if refrigerator_form.validate_on_submit():
         return compare_refrigerators(refrigerator_form)
@@ -23,16 +32,8 @@ def list_methods():
     item_form = CompareItems()
     if item_form.validate_on_submit():
         return compare_items(item_form)
-    choose_refrigerator = ChooseRefrigerator()
-    if choose_refrigerator.validate_on_submit():
-        return place_left(choose_refrigerator.refrigerator.data)
-    choose_refrigerator1 = ChooseRefrigerator()
-    if choose_refrigerator1.validate_on_submit():
-        return whats_to_eat(choose_refrigerator1.refrigerator.data)
-    return render_template('list_pages/mthods.html', template=True, refrigerator_form=refrigerator_form,
-                           shelf_form=shelf_form, item_form=item_form,
-                           choose_refrigerator=choose_refrigerator,
-                           choose_refrigerator1=choose_refrigerator1)
+    return render_template('list_pages/compare_methods.html', template=True, refrigerator_form=refrigerator_form,
+                           shelf_form=shelf_form, item_form=item_form)
 
 
 def compare_shelves(form):
@@ -154,4 +155,4 @@ def shelf_creator(get_shelf):
 def item_creator(get_item, level_number):
     from .item.item_obj import ItemObj
     return ItemObj(get_item.name, level_number, get_item.type_category,
-                             get_item.kosher_category, get_item.expiration_date, get_item.place_taken)
+                   get_item.kosher_category, get_item.expiration_date, get_item.place_taken)

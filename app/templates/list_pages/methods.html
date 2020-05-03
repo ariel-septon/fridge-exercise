@@ -1,0 +1,48 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Methods{% endblock %}
+{% block body %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <br/>
+                {{ utils.flashed_messages() }}
+                <br/>
+                <h1 style="text-align:center;">Methods Menu</h1>
+                <hr class="intro-divider">
+                <div class="center">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th width="20%"> Name</th>
+                            <th width="40%"> Description</th>
+                            <th width="40%"> Navigate to methods</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Comparing objects</td>
+                            <td>Compare between 2 of the same object</td>
+                            <td>
+                                <a href="{{ url_for('methods.compare_methods') }}">link</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Compare shelves</td>
+                            <td>Compare between 2 shelves</td>
+                            <td>
+                                {% if template %}
+                                link
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
