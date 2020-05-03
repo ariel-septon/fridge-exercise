@@ -16,9 +16,3 @@ def index():
                            name=session.get('name'),
                            known=session.get('known', False),
                            current_time=datetime.utcnow())
-    # return render_template('home/index.html', title="Welcome")
-
-
-@main.route('/ret', methods=['GET', 'POST'])
-def index_more():
-    return 'ret'

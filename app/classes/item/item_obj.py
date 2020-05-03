@@ -1,7 +1,7 @@
 from app.helpers.utils import id_number_generator
 
 
-class Item:
+class ItemObj:
     def __init__(self, name, shelf_located, type_category, kosher_category,
                  expiration_date, place_taken):
         self.id = id_number_generator()
@@ -13,7 +13,7 @@ class Item:
         self.place_taken = place_taken
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, Item):
+        if not isinstance(other, ItemObj):
             return False
         return other.name == self.name and \
                other.shelf_located == self.shelf_located and \

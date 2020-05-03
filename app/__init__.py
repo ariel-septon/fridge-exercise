@@ -35,8 +35,10 @@ def create_app(config_name):
     app.register_blueprint(shelf_blueprint)
     from .classes.refrigerator import refrigerator as refrigerator_blueprint
     app.register_blueprint(refrigerator_blueprint)
-    from .helpers.insert_actions import insert_actions as insert_actions_blueprint
+    from app.insert_actions import insert_actions as insert_actions_blueprint
     app.register_blueprint(insert_actions_blueprint)
+    from app.classes import methods as methods_blueprint
+    app.register_blueprint(methods_blueprint)
     from app import models
 
     return app

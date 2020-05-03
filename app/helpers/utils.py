@@ -1,6 +1,4 @@
 from datetime import *
-from app.classes.item.item import Item
-from app.classes.shelf.shelf import Shelf
 
 global_id = 0
 
@@ -11,11 +9,11 @@ def id_number_generator() -> int:
     return global_id
 
 
-def is_expired(item: Item) -> bool:
+def is_expired(item) -> bool:
     return is_expired_in_less_than_x_days(item, 0)
 
 
-def is_expired_in_less_than_x_days(item: Item, number_of_days) -> bool:
+def is_expired_in_less_than_x_days(item, number_of_days) -> bool:
     today = date.today()
     delta = item.expiration_date - today
     if delta.days < number_of_days:
@@ -23,7 +21,7 @@ def is_expired_in_less_than_x_days(item: Item, number_of_days) -> bool:
     return False
 
 
-def item_by_id(shelves_list, id_number) -> Item:
+def item_by_id(shelves_list, id_number):
     for shelf in shelves_list:
         for item in shelf.items_list:
             if item.id == id_number:
@@ -31,13 +29,13 @@ def item_by_id(shelves_list, id_number) -> Item:
     raise ValueError('The item is not currently in the refrigerator')
 
 
-def is_item_fits_categories(item: Item, kosher_category, type_category) -> bool:
+def is_item_fits_categories(item, kosher_category, type_category) -> bool:
     return item.kosher_category == kosher_category and \
            item.type_category == type_category and \
            not is_expired(item)
 
 
-def get_shelf_by_id(self, id_number) -> Shelf:
+def get_shelf_by_id(self, id_number):
     shelf = next((shelf for shelf in self.shelves_list if shelf.id == id_number), None)
     if shelf is not None:
         return shelf

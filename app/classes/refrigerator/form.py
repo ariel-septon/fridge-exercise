@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import DataRequired
-from ...models import Shelf
+# from ...models import Shelf
 
 
 class CreateARefrigeratorForm(FlaskForm):

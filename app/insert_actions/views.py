@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for
 
 from .forms import InsertAnItemToShelf, InsertAShelfToRefrigerator
-from ... import db
-from ...models import Item, Shelf, Refrigerator
+from app import db
+from app.models import Item, Shelf, Refrigerator
 from . import insert_actions
 
 
@@ -12,7 +12,7 @@ def choose_action():
     shelves = Shelf.query.all()
     items = Item.query.all()
 
-    return render_template('insert_actions.html',
+    return render_template('insert_objects_pages/insert_actions.html',
                            refrigerators=refrigerators,
                            shelves=shelves,
                            items=items,
@@ -33,7 +33,7 @@ def shelf(refrigerator_id):
         flash('You have successfully assigned a department and role.')
         return redirect(url_for('insert_actions.choose_action'))
 
-    return render_template('insert_shelf.html',
+    return render_template('insert_objects_pages/insert_shelf.html',
                            refrigerator=refrigerator, form=form,
                            title='Assign Shelf')
 
@@ -52,6 +52,6 @@ def item(shelf_id):
         flash('You have successfully assigned a department and role.')
         return redirect(url_for('insert_actions.choose_action'))
 
-    return render_template('insert_item.html',
+    return render_template('insert_objects_pages/insert_item.html',
                            shelf=current_shelf, form=form,
                            title='Assign Item')

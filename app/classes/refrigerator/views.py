@@ -6,35 +6,13 @@ from ... import db
 from ...models import Refrigerator
 
 
-@refrigerator.route('/create-a-refrigerator', methods=['GET', 'POST'])
-def create():
-    """
-    Handle requests to the /create-an-item route
-    Add an item to the database through the form
-    """
-    form = CreateARefrigeratorForm()
-    if form.validate_on_submit():
-        new_refrigerator = Refrigerator(model=form.model.data,
-                                        color=form.color.data)
-
-        db.session.add(new_refrigerator)
-        db.session.commit()
-        flash('success!')
-
-        # redirect to the login page
-        return redirect(url_for('shelf.create'))
-
-    # load registration template
-    return render_template('auth/creation_form.html', form=form, title='Create a refrigerator', object='a refrigerator')
-
-
 @refrigerator.route('/refrigerators')
 def list_refrigerators():
     """
     List all refrigerators
     """
     refrigerators = Refrigerator.query.all()
-    return render_template('refrigerators.html',
+    return render_template('list_pages/refrigerators.html',
                            refrigerators=refrigerators, title='Refrigerators')
 
 
@@ -49,7 +27,6 @@ def add():
     if form.validate_on_submit():
         new_refrigerator = Refrigerator(model=form.model.data,
                                         color=form.color.data)
-
         try:
             # add role to the database
             db.session.add(new_refrigerator)
@@ -63,11 +40,11 @@ def add():
         return redirect(url_for('refrigerator.list_refrigerators'))
 
     # load role template
-    return render_template('edit/refrigerator.html', add_refrigerator=add_refrigerator,
+    return render_template('edit_pages/refrigerator.html', add_refrigerator=add_refrigerator,
                            form=form, title='Add Refrigerator')
 
 
-@refrigerator.route('/refrigerators/edit/<int:refrigerator_id>', methods=['GET', 'POST'])
+@refrigerator.route('/refrigerators/edit_pages/<int:refrigerator_id>', methods=['GET', 'POST'])
 def edit(refrigerator_id):
     """
     Edit a refrigerator
@@ -89,7 +66,7 @@ def edit(refrigerator_id):
 
     form.model.data = edit_refrigerator.model
     form.color.data = edit_refrigerator.color
-    return render_template('edit/refrigerator.html', add_refrigerator=add_refrigerator,
+    return render_template('edit_pages/refrigerator.html', add_refrigerator=add_refrigerator,
                            form=form, title="Edit Refrigerator")
 
 
@@ -106,3 +83,5 @@ def delete(refrigerator_id):
 
     # redirect to the roles page
     return redirect(url_for('refrigerator.list_refrigerators'))
+
+

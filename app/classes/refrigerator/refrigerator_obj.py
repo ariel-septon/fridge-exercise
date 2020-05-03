@@ -3,12 +3,12 @@ from app.helpers.utils import is_expired
 from app.helpers.utils import is_item_fits_categories
 from app.helpers.utils import remove_items_due_specific_expiration_date_and_kosher_category
 from app.helpers.utils import insert_the_fresh_items_back_to_fridge
-from app.classes.shelf.shelf import Shelf
-from app.classes.item.item import Item
+from app.classes.shelf.shelf_obj import ShelfObj
+from app.classes.item.item_obj import ItemObj
 
 
-class Refrigerator:
-    def __init__(self, model, color, shelves_list: [Shelf]):
+class RefrigeratorObj:
+    def __init__(self, model, color, shelves_list: [ShelfObj]):
         self.id = id_number_generator()
         self.model = model
         self.color = color
@@ -16,7 +16,7 @@ class Refrigerator:
         self.shelf_amount = len(self.shelves_list)
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, Refrigerator):
+        if not isinstance(other, RefrigeratorObj):
             return False
         return other.model == self.model and \
                other.color == self.color and \
@@ -26,10 +26,10 @@ class Refrigerator:
     def place_left_in_the_fridge(self) -> int:
         return sum(shelf.place_left for shelf in self.shelves_list)
 
-    def add_a_shelf(self, shelf: Shelf):
+    def add_a_shelf(self, shelf: ShelfObj):
         self.shelves_list.append(shelf)
 
-    def add_an_item(self, shelf: Shelf, item: Item) -> bool:
+    def add_an_item(self, shelf: ShelfObj, item: ItemObj) -> bool:
         if shelf in self.shelves_list:
             if shelf.place_left >= item.place_taken:
                 shelf.items_list.append(item)
@@ -38,7 +38,7 @@ class Refrigerator:
                 return True
         return False
 
-    def take_out_an_item(self, id_number) -> Item:
+    def take_out_an_item(self, id_number) -> ItemObj:
         for shelf in self.shelves_list:
             item = next((item for item in shelf.items_list if item.id == id_number), None)
             if item is not None:
