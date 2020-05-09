@@ -6,7 +6,7 @@ from ... import db
 from ...models import Shelf
 
 
-@shelf.route('/shelves')
+@shelf.route('/shelves', methods=['GET', 'POST'])
 def list_shelves():
     """
     List all shelves
@@ -41,11 +41,11 @@ def add():
         return redirect(url_for('shelf.list_shelves'))
 
     # load role template
-    return render_template('edit_pages/shelf.html', add_shelf=add_shelf,
+    return render_template('edit/shelf.html', add_shelf=add_shelf,
                            form=form, title='Add Shelf')
 
 
-@shelf.route('/shelves/edit_pages/<int:shelf_id>', methods=['GET', 'POST'])
+@shelf.route('/shelves/edit/<int:shelf_id>', methods=['GET', 'POST'])
 def edit(shelf_id):
     """
     Edit a shelf
@@ -67,7 +67,7 @@ def edit(shelf_id):
 
     form.level_number.data = edit_shelf.level_number
     form.place_size.data = edit_shelf.place_size
-    return render_template('edit_pages/shelf.html', add_shelf=add_shelf,
+    return render_template('edit/shelf.html', add_shelf=add_shelf,
                            form=form, title="Edit Shelf")
 
 

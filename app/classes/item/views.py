@@ -18,7 +18,7 @@ def list_items():
                            items=items, title="Items")
 
 
-@item.route('/items/edit_pages/<int:item_id>', methods=['GET', 'POST'])
+@item.route('/items/edit/<int:item_id>', methods=['GET', 'POST'])
 def edit(item_id):
     """
     Edit an item
@@ -46,7 +46,7 @@ def edit(item_id):
     form.expiration_date.data = edit_item.expiration_date
     form.place_taken.data = edit_item.place_taken
 
-    return render_template('edit_pages/item.html', action="Edit",
+    return render_template('edit/item.html', action="Edit",
                            add_item=add_item, form=form,
                            item=edit_item, title="Edit Item")
 
@@ -79,7 +79,7 @@ def add():
         return redirect(url_for('item.list_items'))
 
     # load role template
-    return render_template('edit_pages/item.html', add_item=add_item,
+    return render_template('edit/item.html', add_item=add_item,
                            form=form, title='Add Item')
 
 

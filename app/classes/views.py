@@ -1,28 +1,20 @@
-import datetime
-
-from flask import render_template, session, redirect, url_for
+from flask import render_template, make_response, jsonify
 
 from run import app
 from . import methods
-from ..models import Refrigerator, Item
 from flask import json
-from .forms import CompareRefrigerators, CompareShelves, CompareItems, ChooseRefrigerator
+from .forms import CompareRefrigerators, CompareShelves, CompareItems, \
+    ChooseRefrigerator, ChooseRefrigerator1, ChooseRefrigerator2, \
+    RemoveItemFromRefrigerator, AddAnItemToRefrigerator
 
 
 @methods.route('/methods', methods=['GET', 'POST'])
 def list_methods():
-    """
-    Render the homepage template on the / route
-    """
-
     return render_template('list_pages/methods.html', template=True)
 
 
 @methods.route('/methods/compare', methods=['GET', 'POST'])
 def compare_methods():
-    """
-    Render the homepage template on the / route
-    """
     refrigerator_form = CompareRefrigerators()
     if refrigerator_form.validate_on_submit():
         return compare_refrigerators(refrigerator_form)
@@ -36,11 +28,76 @@ def compare_methods():
                            shelf_form=shelf_form, item_form=item_form)
 
 
-def compare_shelves(form):
-    shelf1 = shelf_creator(form.shelf1.data)
-    shelf2 = shelf_creator(form.shelf2.data)
+@methods.route('/methods/objects', methods=['GET', 'POST'])
+def objects_methods():
+    add_item_form = AddAnItemToRefrigerator()
+    if add_item_form.validate_on_submit():
+        return add_item_to_refrigerator(add_item_form.refrigerator.data, add_item_form.item.data)
+    take_item_out_form = RemoveItemFromRefrigerator()
+    if take_item_out_form.validate_on_submit():
+        return take_item_out(take_item_out_form.refrigerator__.data, take_item_out_form.item__.data)
+    return render_template('list_pages/objects_methods.html', template=True, add_item=add_item_form,
+                           take_out=take_item_out_form)
+
+
+@methods.route('/methods/refrigerator-methods', methods=['GET', 'POST'])
+def refrigerator_methods():
+    cleanup_form = ChooseRefrigerator()
+    if cleanup_form.validate_on_submit():
+        return cleanup_refrigerator(cleanup_form.refrigerator.data)
+    whats_to_eat_form = ChooseRefrigerator1()
+    if whats_to_eat_form.validate_on_submit():
+        return whats_to_eat(whats_to_eat_form)
+    getting_ready_form = ChooseRefrigerator2()
+    if getting_ready_form.validate_on_submit():
+        return shopping_ready(getting_ready_form.refrigerator2.data)
+    return render_template('list_pages/refrigerator_methods.html',
+                           cleanup=cleanup_form,
+                           more=whats_to_eat_form,
+                           last=getting_ready_form)
+
+
+def take_item_out(get_refrigerator, get_item):
+    item_obj = item_creator(get_item, 0)
+    refrigerator_obj = refrigerator_creator(get_refrigerator)
+    print(item_obj.id)
+    refrigerator_obj.take_out_an_item(get_item.id)
+    for shelf in refrigerator_obj.shelves_list:
+        for item in shelf.items_list:
+            item.expiration_date = str(item.expiration_date)
     response = app.response_class(
-        response=json.dumps(shelf1.__eq__(shelf2), default=lambda o: o.__dict__,
+        response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
+                            sort_keys=True, indent=4),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
+
+
+def add_item_to_refrigerator(get_refrigerator, get_item):
+    item_obj = item_creator(get_item, 0)
+    refrigerator_obj = refrigerator_creator(get_refrigerator)
+    if refrigerator_obj.add_an_item(item_obj):
+        for shelf in refrigerator_obj.shelves_list:
+            for item in shelf.items_list:
+                item.expiration_date = str(item.expiration_date)
+        response = app.response_class(
+            response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
+                                sort_keys=True, indent=4),
+            status=200,
+            mimetype='application/json'
+        )
+
+    else:
+        response = make_response(jsonify('The selected refrigerator '
+                                         'does not have enough space left'), 404)
+
+    return response
+
+
+def compare_shelves(form):
+    response = app.response_class(
+        response=json.dumps(form.shelf1.data.__eq__(form.shelf2.data), default=lambda o: o.__dict__,
                             sort_keys=True, indent=4),
         status=200,
         mimetype='application/json'
@@ -49,22 +106,20 @@ def compare_shelves(form):
 
 
 def compare_refrigerators(form):
-    refrigerator1 = refrigerator_creator(form.refrigerator1.data)
-    refrigerator2 = refrigerator_creator(form.refrigerator2.data)
+    print('in')
     response = app.response_class(
-        response=json.dumps(refrigerator1.__eq__(refrigerator2), default=lambda o: o.__dict__,
+        response=json.dumps(form.refrigerator1.data.__eq__(form.refrigerator2.data), default=lambda o: o.__dict__,
                             sort_keys=True, indent=4),
         status=200,
         mimetype='application/json'
     )
+    print('out')
     return response
 
 
 def compare_items(form):
-    item1 = item_creator(form.item1.data, 0)
-    item2 = item_creator(form.item2.data, 0)
     response = app.response_class(
-        response=json.dumps(item1.__eq__(item2), default=lambda o: o.__dict__,
+        response=json.dumps(form.item1.data.__eq__(form.item2.data), default=lambda o: o.__dict__,
                             sort_keys=True, indent=4),
         status=200,
         mimetype='application/json'
@@ -72,9 +127,7 @@ def compare_items(form):
     return response
 
 
-@methods.route('/methods/cleanup/<int:refrigerator_id>')
-def cleanup_refrigerator(refrigerator_id):
-    get_refrigerator = Refrigerator.query.get_or_404(refrigerator_id)
+def cleanup_refrigerator(get_refrigerator):
     refrigerator_obj = refrigerator_creator(get_refrigerator)
     refrigerator_obj.cleanup()
     for shelf in refrigerator_obj.shelves_list:
@@ -105,23 +158,27 @@ def place_left(get_refrigerator):
     return response
 
 
-def whats_to_eat(get_refrigerator):
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
-    list1 = refrigerator_obj.whats_to_eat('dairy', 'drink')
+def whats_to_eat(form):
+    refrigerator_obj = refrigerator_creator(form.refrigerator1.data)
+    list1 = refrigerator_obj.whats_to_eat(form.kosher_category.data, form.type_category.data)
     for item in list1:
         item.expiration_date = str(item.expiration_date)
-    response = app.response_class(
-        response=json.dumps(list1, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4),
-        status=200,
-        mimetype='application/json'
-    )
+    if len(list1) != 0:
+        response = app.response_class(
+            response=json.dumps(list1, default=lambda o: o.__dict__,
+                                sort_keys=True, indent=4),
+            status=200,
+            mimetype='application/json'
+        )
+    else:
+        response = make_response(jsonify('The selected refrigerator '
+                                         'does not contain an item that'
+                                         ' matches the selected categories'), 404)
+
     return response
 
 
-@methods.route('/methods/shopping-ready/<int:refrigerator_id>')
-def shopping_ready(refrigerator_id):
-    get_refrigerator = Refrigerator.query.get_or_404(refrigerator_id)
+def shopping_ready(get_refrigerator):
     refrigerator_obj = refrigerator_creator(get_refrigerator)
     refrigerator_obj.getting_shopping_ready()
     for shelf in refrigerator_obj.shelves_list:

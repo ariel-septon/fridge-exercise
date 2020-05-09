@@ -2,9 +2,6 @@ from app import db
 
 
 class Item(db.Model):
-    """
-    Create a Item table
-    """
     __tablename__ = 'items'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,11 +16,17 @@ class Item(db.Model):
     def __repr__(self):
         return '<Item: {}>'.format(self.name)
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Item):
+            return False
+        return other.name == self.name and \
+               other.type_category == self.type_category and \
+               other.kosher_category == self.kosher_category and \
+               other.expiration_date == self.expiration_date and \
+               other.place_taken == self.place_taken
+
 
 class Shelf(db.Model):
-    """
-    Create a shelf table
-    """
     __tablename__ = 'shelves'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -31,17 +34,33 @@ class Shelf(db.Model):
     place_size = db.Column(db.Integer)
     items_list = db.relationship('Item', backref='shelf',
                                  lazy='dynamic')
+
+    place_left = db.Column(db.Integer)
+
     # foreign key
     refrigerator_id = db.Column(db.Integer, db.ForeignKey('refrigerators.id'))
 
     def __repr__(self):
         return '<Shelf: {}>'.format(self.name)
 
+    def __init__(self):
+        self.place_left = self.place_size - sum(item.place_taken for item in self.items_list)
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Shelf):
+            return False
+        """
+        return other.level_number == self.level_number and \
+               other.place_size == self.place_size and \
+               other.place_left == self.place_left and \
+               other.items_list == self.items_list
+        """
+        return other.level_number == self.level_number and \
+               other.place_size == self.place_size and \
+               other.place_left == self.place_left
+
 
 class Refrigerator(db.Model):
-    """
-    Create a refrigerator table
-    """
     __tablename__ = 'refrigerators'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -51,6 +70,23 @@ class Refrigerator(db.Model):
                                    backref='refrigerator',
                                    lazy='dynamic')
 
+    shelf_amount = db.Column(db.Integer)
+
     def __repr__(self):
         return '<Refrigerator: {}>'.format(self.name)
 
+    def __init__(self):
+        self.shelf_amount = len(self.shelves_list)
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Refrigerator):
+            return False
+        """
+        return other.model == self.model and \
+               other.color == self.color and \
+               other.shelf_amount == self.shelf_amount and \
+               other.shelves_list == self.shelves_list
+        """
+        return other.model == self.model and \
+               other.color == self.color and \
+               other.shelf_amount == self.shelf_amount

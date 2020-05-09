@@ -14,7 +14,7 @@ class RefrigeratorObj:
         self.color = color
         self.shelves_list = shelves_list
         self.shelf_amount = len(self.shelves_list)
-
+    """
     def __eq__(self, other) -> bool:
         if not isinstance(other, RefrigeratorObj):
             return False
@@ -22,6 +22,7 @@ class RefrigeratorObj:
                other.color == self.color and \
                other.shelf_amount == self.shelf_amount and \
                other.shelves_list == self.shelves_list
+               """
 
     def place_left_in_the_fridge(self) -> int:
         return sum(shelf.place_left for shelf in self.shelves_list)
@@ -29,11 +30,11 @@ class RefrigeratorObj:
     def add_a_shelf(self, shelf: ShelfObj):
         self.shelves_list.append(shelf)
 
-    def add_an_item(self, shelf: ShelfObj, item: ItemObj) -> bool:
-        if shelf in self.shelves_list:
+    def add_an_item(self, item: ItemObj) -> bool:
+        for shelf in self.shelves_list:
             if shelf.place_left >= item.place_taken:
                 shelf.items_list.append(item)
-                item.shelf_located = shelf
+                item.shelf_located = shelf.level_number
                 shelf.place_left = shelf.place_left - item.place_taken
                 return True
         return False

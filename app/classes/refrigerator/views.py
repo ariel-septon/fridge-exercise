@@ -8,9 +8,6 @@ from ...models import Refrigerator
 
 @refrigerator.route('/refrigerators')
 def list_refrigerators():
-    """
-    List all refrigerators
-    """
     refrigerators = Refrigerator.query.all()
     return render_template('list_pages/refrigerators.html',
                            refrigerators=refrigerators, title='Refrigerators')
@@ -40,11 +37,11 @@ def add():
         return redirect(url_for('refrigerator.list_refrigerators'))
 
     # load role template
-    return render_template('edit_pages/refrigerator.html', add_refrigerator=add_refrigerator,
+    return render_template('edit/refrigerator.html', add_refrigerator=add_refrigerator,
                            form=form, title='Add Refrigerator')
 
 
-@refrigerator.route('/refrigerators/edit_pages/<int:refrigerator_id>', methods=['GET', 'POST'])
+@refrigerator.route('/refrigerators/edit/<int:refrigerator_id>', methods=['GET', 'POST'])
 def edit(refrigerator_id):
     """
     Edit a refrigerator
@@ -66,16 +63,12 @@ def edit(refrigerator_id):
 
     form.model.data = edit_refrigerator.model
     form.color.data = edit_refrigerator.color
-    return render_template('edit_pages/refrigerator.html', add_refrigerator=add_refrigerator,
+    return render_template('edit/refrigerator.html', add_refrigerator=add_refrigerator,
                            form=form, title="Edit Refrigerator")
 
 
 @refrigerator.route('/refrigerators/delete/<int:refrigerator_id>', methods=['GET', 'POST'])
 def delete(refrigerator_id):
-    """
-    Delete a refrigerator from the database
-    """
-
     delete_refrigerator = Refrigerator.query.get_or_404(refrigerator_id)
     db.session.delete(delete_refrigerator)
     db.session.commit()

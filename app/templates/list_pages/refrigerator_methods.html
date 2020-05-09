@@ -10,47 +10,50 @@
                 <br/>
                 {{ utils.flashed_messages() }}
                 <br/>
-                <h1 style="text-align:center;">Methods Menu</h1>
+                <h1 style="text-align:center;">Refrigerator Methods</h1>
                 <hr class="intro-divider">
                 <div class="center">
                     <table class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th width="30%"> Name</th>
-                            <th width="50%"> Description</th>
-                            <th width="20%"> Navigate to methods</th>
+                            <th width="20%"> Name</th>
+                            <th width="40%"> Description</th>
+                            <th width="40%"> Fill the template</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>Comparing objects</td>
-                            <td>Compare between 2 of the same object</td>
+                            <td>Cleanup refrigerator</td>
+                            <td>Remove all expired items</td>
                             <td>
-                                <a href="{{ url_for('methods.compare_methods') }}" class="btn btn-default btn-lg">
-                                    View methods
-                                </a>
+                                {{ wtf.quick_form(cleanup) }}
                             </td>
                         </tr>
                         <tr>
-                            <td>Insert objects</td>
+                            <td>Whats to eat</td>
                             <td>Compare between 2 shelves</td>
                             <td>
-                                <a href="{{ url_for('methods.objects_methods') }}" class="btn btn-default btn-lg">
-                                    View methods
-                                </a>
+                                {{ wtf.quick_form(more) }}
                             </td>
                         </tr>
-                         <tr>
-                            <td>Refrigerator methods</td>
-                            <td>Compare between 2 shelves</td>
+                        <tr>
+                            <td>Getting shopping ready</td>
+                            <td>Compare between 2 items</td>
                             <td>
-                                <a href="{{ url_for('methods.refrigerator_methods') }}" class="btn btn-default btn-lg">
-                                    View methods
-                                </a>
+                                {{ wtf.quick_form(last) }}
                             </td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div style="text-align: center">
+                    <div style="text-align: center">
+                        <hr class="intro-divider">
+                        <a href="{{ url_for('methods.list_methods') }}" class="btn btn-default btn-lg">
+                            <i class="fa fa-plus"></i>
+                            Go back
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

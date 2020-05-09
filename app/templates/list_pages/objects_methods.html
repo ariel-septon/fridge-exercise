@@ -1,0 +1,59 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Methods{% endblock %}
+{% block body %}
+<div class="content-section">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+                <br/>
+                {{ utils.flashed_messages() }}
+                <br/>
+                <h1 style="text-align:center;">Object Methods</h1>
+                <hr class="intro-divider">
+                <div class="center">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th width="20%"> Name</th>
+                            <th width="40%"> Description</th>
+                            <th width="40%"> Fill the template</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Insert an item</td>
+                            <td>Choose a refrigerator, and an item you wish to insert to the refrigerator</td>
+                            <td>
+                                {% if template %}
+                                {{ wtf.quick_form(add_item) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Take an item out</td>
+                            <td>Choose a refrigerator, and an item you wish to remove from the refrigerator</td>
+                            <td>
+                                {% if template %}
+                                {{ wtf.quick_form(take_out) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center">
+                    <div style="text-align: center">
+                        <hr class="intro-divider">
+                        <a href="{{ url_for('methods.list_methods') }}" class="btn btn-default btn-lg">
+                            <i class="fa fa-plus"></i>
+                            Go back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
