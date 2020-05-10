@@ -2,8 +2,12 @@ from flask import render_template, flash, redirect, url_for
 
 from .forms import InsertAnItemToShelf, InsertAShelfToRefrigerator
 from app import db
-from app.models import Item, Shelf, Refrigerator
 from . import insert_actions
+"""
+from ..classes.item.Item import Item
+from ..classes.shelf.shelf import Shelf
+from ..classes.refrigerator.refrigerator import Refrigerator"""
+from ..models import Shelf, Refrigerator, Item
 
 
 @insert_actions.route('/insert-actions')

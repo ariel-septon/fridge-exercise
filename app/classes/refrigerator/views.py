@@ -3,6 +3,7 @@ from flask import flash, redirect, render_template, url_for
 from . import refrigerator
 from .form import CreateARefrigeratorForm
 from ... import db
+# from .refrigerator import Refrigerator
 from ...models import Refrigerator
 
 
@@ -15,9 +16,6 @@ def list_refrigerators():
 
 @refrigerator.route('/refrigerators/add', methods=['GET', 'POST'])
 def add():
-    """
-    Add a refrigerator to the database
-    """
     add_refrigerator = True
 
     form = CreateARefrigeratorForm()
@@ -30,23 +28,15 @@ def add():
             db.session.commit()
             flash('You have successfully added a new refrigerator.')
         except:
-            # in case role name already exists
             flash('Error: refrigerator name already exists.')
 
-        # redirect to the roles page
         return redirect(url_for('refrigerator.list_refrigerators'))
-
-    # load role template
     return render_template('edit/refrigerator.html', add_refrigerator=add_refrigerator,
                            form=form, title='Add Refrigerator')
 
 
 @refrigerator.route('/refrigerators/edit/<int:refrigerator_id>', methods=['GET', 'POST'])
 def edit(refrigerator_id):
-    """
-    Edit a refrigerator
-    """
-
     add_refrigerator = False
 
     edit_refrigerator = Refrigerator.query.get_or_404(refrigerator_id)
@@ -58,7 +48,6 @@ def edit(refrigerator_id):
         db.session.commit()
         flash('You have successfully edited the refrigerator.')
 
-        # redirect to the roles page
         return redirect(url_for('refrigerator.list_refrigerators'))
 
     form.model.data = edit_refrigerator.model
@@ -74,7 +63,4 @@ def delete(refrigerator_id):
     db.session.commit()
     flash('You have successfully deleted the refrigerator.')
 
-    # redirect to the roles page
     return redirect(url_for('refrigerator.list_refrigerators'))
-
-

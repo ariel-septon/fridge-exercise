@@ -1,4 +1,4 @@
-from app.classes.refrigerator.refrigerator_obj import RefrigeratorObj
+from app.classes.refrigerator.refrigerator import RefrigeratorObj
 
 
 class Refrigerators:

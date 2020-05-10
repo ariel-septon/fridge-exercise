@@ -1,8 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
+from wtforms import SubmitField, SelectField
 from wtforms.validators import DataRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from ..models import Shelf, Item, Refrigerator
+"""
+from .refrigerator.refrigerator import Refrigerator
+from .item.Item import Item
+from .shelf.shelf import Shelf"""
+from ..models import Item, Refrigerator, Shelf
 
 
 class CompareRefrigerators(FlaskForm):

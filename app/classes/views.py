@@ -92,7 +92,6 @@ def compare_shelves(form):
 
 
 def compare_refrigerators(form):
-    print('in')
     response = app.response_class(
         response=json.dumps(form.refrigerator1.data.__eq__(form.refrigerator2.data), default=lambda o: o.__dict__,
                             sort_keys=True, indent=4),
@@ -159,7 +158,7 @@ def shopping_ready(get_refrigerator):
 
 
 def refrigerator_creator(get_refrigerator):
-    from .refrigerator.refrigerator_obj import RefrigeratorObj
+    from .refrigerator.refrigerator import RefrigeratorObj
     shelves_list = []
     for shelf in get_refrigerator.shelves_list:
         shelves_list.append(shelf_creator(shelf))
@@ -167,7 +166,7 @@ def refrigerator_creator(get_refrigerator):
 
 
 def shelf_creator(get_shelf):
-    from .shelf.shelf_obj import ShelfObj
+    from .shelf.shelf import ShelfObj
     items = []
     for item in get_shelf.items_list:
         items.append(item_creator(item, get_shelf.level_number))
@@ -175,7 +174,7 @@ def shelf_creator(get_shelf):
 
 
 def item_creator(get_item, level_number):
-    from .item.item_obj import ItemObj
+    from .item.Item import ItemObj
     return ItemObj(get_item.name, level_number, get_item.type_category,
                    get_item.kosher_category, get_item.expiration_date, get_item.place_taken)
 

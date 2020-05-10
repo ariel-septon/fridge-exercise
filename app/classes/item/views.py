@@ -3,6 +3,7 @@ from flask import flash, redirect, render_template, url_for
 from . import item
 from .form import CreateAnItemForm
 from ... import db
+# from .Item import Item
 from ...models import Item
 
 
@@ -42,11 +43,7 @@ def edit(item_id):
 
 @item.route('/items/add', methods=['GET', 'POST'])
 def add():
-    """
-    Add a shelf to the database
-    """
     add_item = True
-
     form = CreateAnItemForm()
     if form.validate_on_submit():
         new_item = Item(name=form.name.data,
@@ -70,13 +67,8 @@ def add():
 
 @item.route('/departments/delete/<int:item_id>', methods=['GET', 'POST'])
 def delete(item_id):
-    """
-    Delete a department from the database
-    """
-
     delete_item = Item.query.get_or_404(item_id)
     db.session.delete(delete_item)
     db.session.commit()
     flash('You have successfully deleted the item.')
-
     return redirect(url_for('item.list_items'))

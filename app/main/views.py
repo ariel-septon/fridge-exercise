@@ -4,8 +4,6 @@ from . import main
 from .. import db
 from config import Config
 
-# from ..models import User
-
 
 @main.route('/', methods=['GET', 'POST'])
 def index():

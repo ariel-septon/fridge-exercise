@@ -3,6 +3,7 @@ from flask import flash, redirect, render_template, url_for
 from . import shelf
 from .form import CreateAShelfForm
 from ... import db
+#from .shelf import Shelf
 from ...models import Shelf
 
 

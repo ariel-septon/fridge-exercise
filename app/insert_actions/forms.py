@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from app.models import Shelf, Item, Refrigerator
+"""
+from ..classes.item.Item import Item
+from ..classes.shelf.shelf import Shelf"""
+from ..models import Shelf, Item
 
 
 class InsertAnItemToShelf(FlaskForm):

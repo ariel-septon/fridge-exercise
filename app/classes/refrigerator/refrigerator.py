@@ -1,76 +1,14 @@
+from app.helpers.utils import id_number_generator
+from app.classes.shelf.shelf import ShelfObj
 from app import db
 from app.helpers.utils import is_expired
 from app.helpers.utils import is_item_fits_categories
 from app.helpers.utils import remove_items_due_specific_expiration_date_and_kosher_category
 from app.helpers.utils import insert_the_fresh_items_back_to_fridge
+# from ..shelf.shelf import Shelf
+# from ..item.Item import Item
 
-
-class Item(db.Model):
-    __tablename__ = 'items'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), unique=True)
-    type_category = db.Column(db.String(60))
-    kosher_category = db.Column(db.String(60))
-    expiration_date = db.Column(db.DATE)
-    place_taken = db.Column(db.Integer)
-    # foreign key
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelves.id'))
-
-    def __repr__(self):
-        return '<Item: {}>'.format(self.name)
-
-    def __init__(self, name: str, shelf_located: int, type_category: str, kosher_category: str,
-                 expiration_date, place_taken):
-        self.name = name
-        self.shelf_located = shelf_located
-        self.type_category = type_category
-        self.kosher_category = kosher_category
-        self.expiration_date = expiration_date
-        self.place_taken = place_taken
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Item):
-            return False
-        return other.name == self.name and \
-               other.type_category == self.type_category and \
-               other.kosher_category == self.kosher_category and \
-               other.expiration_date == self.expiration_date and \
-               other.place_taken == self.place_taken
-
-
-class Shelf(db.Model):
-    __tablename__ = 'shelves'
-
-    id = db.Column(db.Integer, primary_key=True)
-    level_number = db.Column(db.Integer)
-    place_size = db.Column(db.Integer)
-    place_left = db.Column(db.Integer)
-    items_list = db.relationship('Item', backref='shelf')
-
-
-
-    # foreign key
-    refrigerator_id = db.Column(db.Integer, db.ForeignKey('refrigerators.id'))
-
-    def __repr__(self):
-        return '<Shelf: {}>'.format(self.name)
-
-    def __init__(self, level_number: int, place_size: int):
-        self.level_number = level_number
-        self.place_size = place_size
-        self.place_left = place_size
-        self.items_list = []
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Shelf):
-            return False
-        return other.level_number == self.level_number and \
-               other.place_size == self.place_size and \
-               other.place_left == self.place_left and \
-               other.items_list == self.items_list
-
-
+"""
 class Refrigerator(db.Model):
     __tablename__ = 'refrigerators'
 
@@ -108,10 +46,10 @@ class Refrigerator(db.Model):
 
     def add_an_item(self, item: Item) -> bool:
         for shelf in self.shelves_list:
-            if shelf.place_left >= item.place_taken:
+            if shelf.place_size >= item.place_taken:
                 shelf.items_list.append(item)
                 item.shelf_located = shelf.level_number
-                shelf.place_left = shelf.place_left - item.place_taken
+                shelf.place_left = shelf.place_size - item.place_taken
                 db.session.add(self)
                 db.session.commit()
                 return True
@@ -160,3 +98,13 @@ class Refrigerator(db.Model):
                                                                               kosher, save_items)
         if self.place_left_in_the_fridge() < 20:
             insert_the_fresh_items_back_to_fridge(self, save_items)
+"""
+
+
+class RefrigeratorObj:
+    def __init__(self, model, color, shelves_list: [ShelfObj]):
+        self.id = id_number_generator()
+        self.model = model
+        self.color = color
+        self.shelves_list = shelves_list
+        self.shelf_amount = len(self.shelves_list)
