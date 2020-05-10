@@ -14,7 +14,7 @@ class CreateAShelfForm(FlaskForm):
         self.place_left = place_size - sum(item.place_taken for item in self.items_list)
     """
     level_number = IntegerField('Level number', validators=[NumberRange(min=0)])
-    place_size = StringField('Place  size', validators=[DataRequired()])
+    place_size = IntegerField('Place size', validators=[DataRequired()])
     submit = SubmitField('Create')
     """def validate_email(self, field):
         if Employee.query.filter_by(email=field.data).first():

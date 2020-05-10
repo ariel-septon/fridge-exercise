@@ -8,24 +8,14 @@ from ...models import Item
 
 @item.route('/items', methods=['GET', 'POST'])
 def list_items():
-    """
-    List all items
-    """
-
     items = Item.query.all()
-
     return render_template('list_pages/items.html',
                            items=items, title="Items")
 
 
 @item.route('/items/edit/<int:item_id>', methods=['GET', 'POST'])
 def edit(item_id):
-    """
-    Edit an item
-    """
-
     add_item = False
-
     edit_item = Item.query.get_or_404(item_id)
     form = CreateAnItemForm(obj=item)
     if form.validate_on_submit():
@@ -37,7 +27,6 @@ def edit(item_id):
         db.session.commit()
         flash('You have successfully edited the item.')
 
-        # redirect to the items page
         return redirect(url_for('item.list_items'))
 
     form.name.data = edit_item.name
@@ -67,18 +56,14 @@ def add():
                         place_taken=form.place_taken.data)
 
         try:
-            # add role to the database
             db.session.add(new_item)
             db.session.commit()
             flash('You have successfully added a new shelf.')
         except:
-            # in case role name already exists
             flash('Error: shelf name already exists.')
 
-        # redirect to the roles page
         return redirect(url_for('item.list_items'))
 
-    # load role template
     return render_template('edit/item.html', add_item=add_item,
                            form=form, title='Add Item')
 
@@ -94,5 +79,4 @@ def delete(item_id):
     db.session.commit()
     flash('You have successfully deleted the item.')
 
-    # redirect to the items page
     return redirect(url_for('item.list_items'))

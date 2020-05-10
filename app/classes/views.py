@@ -58,31 +58,17 @@ def refrigerator_methods():
 
 
 def take_item_out(get_refrigerator, get_item):
-    item_obj = item_creator(get_item, 0)
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
-    print(item_obj.id)
-    refrigerator_obj.take_out_an_item(get_item.id)
-    for shelf in refrigerator_obj.shelves_list:
-        for item in shelf.items_list:
-            item.expiration_date = str(item.expiration_date)
-    response = app.response_class(
-        response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    get_refrigerator.take_out_an_item(get_item.id)
+    return jsonify_refrigerator(get_refrigerator)
 
 
 def add_item_to_refrigerator(get_refrigerator, get_item):
-    item_obj = item_creator(get_item, 0)
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
-    if refrigerator_obj.add_an_item(item_obj):
-        for shelf in refrigerator_obj.shelves_list:
+    if get_refrigerator.add_an_item(get_item):
+        for shelf in get_refrigerator.shelves_list:
             for item in shelf.items_list:
                 item.expiration_date = str(item.expiration_date)
         response = app.response_class(
-            response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
+            response=json.dumps(refrigerator_creator(get_refrigerator), default=lambda o: o.__dict__,
                                 sort_keys=True, indent=4),
             status=200,
             mimetype='application/json'
@@ -128,26 +114,15 @@ def compare_items(form):
 
 
 def cleanup_refrigerator(get_refrigerator):
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
-    refrigerator_obj.cleanup()
-    for shelf in refrigerator_obj.shelves_list:
-        for item in shelf.items_list:
-            item.expiration_date = str(item.expiration_date)
-    response = app.response_class(
-        response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    get_refrigerator.cleanup()
+    return jsonify_refrigerator(get_refrigerator)
 
 
 def place_left(get_refrigerator):
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
     json_dict = {
-        'refrigerator model': refrigerator_obj.model,
-        'refrigerator color': refrigerator_obj.color,
-        'place left in the fridge': refrigerator_obj.place_left_in_the_fridge()
+        'refrigerator model': get_refrigerator.model,
+        'refrigerator color': get_refrigerator.color,
+        'place left in the fridge': get_refrigerator.place_left_in_the_fridge()
     }
     response = app.response_class(
         response=json.dumps(json_dict, default=lambda o: o.__dict__,
@@ -159,8 +134,8 @@ def place_left(get_refrigerator):
 
 
 def whats_to_eat(form):
-    refrigerator_obj = refrigerator_creator(form.refrigerator1.data)
-    list1 = refrigerator_obj.whats_to_eat(form.kosher_category.data, form.type_category.data)
+    refrigerator = form.refrigerator1.data
+    list1 = refrigerator.whats_to_eat(form.kosher_category.data, form.type_category.data)
     for item in list1:
         item.expiration_date = str(item.expiration_date)
     if len(list1) != 0:
@@ -179,18 +154,8 @@ def whats_to_eat(form):
 
 
 def shopping_ready(get_refrigerator):
-    refrigerator_obj = refrigerator_creator(get_refrigerator)
-    refrigerator_obj.getting_shopping_ready()
-    for shelf in refrigerator_obj.shelves_list:
-        for item in shelf.items_list:
-            item.expiration_date = str(item.expiration_date)
-    response = app.response_class(
-        response=json.dumps(refrigerator_obj, default=lambda o: o.__dict__,
-                            sort_keys=True, indent=4),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    get_refrigerator.getting_shopping_ready()
+    return jsonify_refrigerator(get_refrigerator)
 
 
 def refrigerator_creator(get_refrigerator):
@@ -213,3 +178,16 @@ def item_creator(get_item, level_number):
     from .item.item_obj import ItemObj
     return ItemObj(get_item.name, level_number, get_item.type_category,
                    get_item.kosher_category, get_item.expiration_date, get_item.place_taken)
+
+
+def jsonify_refrigerator(get_refrigerator):
+    for shelf in get_refrigerator.shelves_list:
+        for item in shelf.items_list:
+            item.expiration_date = str(item.expiration_date)
+    response = app.response_class(
+        response=json.dumps(refrigerator_creator(get_refrigerator), default=lambda o: o.__dict__,
+                            sort_keys=True, indent=4),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
